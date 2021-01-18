@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  devise_for :authors
   root to: 'pages#home'
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  scope module: "authors" do 
+    resources :posts, except: [:show] do
+      resources :elements
+    end
+  end
 end
+
