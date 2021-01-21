@@ -1,4 +1,7 @@
 const initActionText = () => {
+  const Trix = require("trix")
+  Trix.config.blockAttributes.heading1.tagName = "h3";
+
   document.addEventListener('click', (event) => {
     let element = event.target.closest('.paragraph-content')
     if (!element) return;

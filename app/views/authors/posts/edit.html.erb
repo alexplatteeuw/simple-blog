@@ -43,53 +43,62 @@
         </h6>
       </div>
       <div class="card-body" data-controller="elements">
-        <ul class="list-unstyled" id="elements" data-controller="elements">
-          <% @post.elements.order(position: :asc).each do |element| %>
-            <% if element.persisted? %>
-              <li data-id="<%= element.id %>" class="element-item">
-                <% if element.paragraph? %>
-                  <div class="mb-4 p-3 paragraph">
-                    <div class="paragraph-content">
-                      <% if element.content.present? %>
-                        <%= element.content %>
-                      <% else %>
-                        Click to add content.
-                      <% end %>
-                    </div>
-                    <div class="paragraph-form d-none">
-                      <%= simple_form_for([@post, element]) do |f| %>
-                        <%= f.rich_text_area :content %>
-                        <div class="mt-3 d-flex justify-content-between">
-                          <div>
-                            <%= f.button :submit, "Save", class:"btn btn-sm btn-primary" %>
-                            <%= link_to "Cancel", "#", class:"cancel btn btn-sm btn-secondary" %>
-                          </div>
-                          <%= link_to 'Delete',  post_element_path(@post, element), method: :delete, class: "btn btn-sm btn-danger", data: { confirm: "Are you sure?" } %>
-                        </div>
-                      <% end %>
-                    </div>
-                  </div>
-                <% elsif element.image? %>
-                  <div class="mb-4 p-3 image">
-                    <% if element.image.present? %>
-                        <%= image_tag(element.image, width: '100%') %>
-                        <%= link_to post_element_path(@post, element), method: :delete, class: "delete-btn btn btn-sm btn-dark mt-2", data: { confirm: "Are you sure?" } do %>
-                          <i class="fas fa-times"></i>
+        <% if @post.elements.none?(&:persisted?) %>
+          <div class="p-4 text-center">
+            <h2 class="text-secondary">
+              <i class="fas fa-lightbulb"></i>
+            </h2>
+            <p>Click the icons above to add elements to this post</p>
+          </div>
+        <% else %>
+          <ul class="list-unstyled" id="elements" data-controller="elements">
+            <% @post.elements.order(position: :asc).each do |element| %>
+              <% if element.persisted? %>
+                <li data-id="<%= element.id %>" class="element-item">
+                  <% if element.paragraph? %>
+                    <div class="mb-4 p-3 paragraph">
+                      <div class="paragraph-content">
+                        <% if element.content.present? %>
+                          <%= element.content %>
+                        <% else %>
+                          Click to add content.
                         <% end %>
-                    <% else %>
-                      <%= simple_form_for([@post, element]) do |f| %>
-                        <%= f.input :image, label: false %>
-                        <div class="mt-3">
-                          <%= f.button :submit, "Save", class:"btn btn-sm btn-primary" %>
-                        </div>
+                      </div>
+                      <div class="paragraph-form d-none" id="element-<%= element.id %>-form">
+                        <%= simple_form_for([@post, element], remote: true) do |f| %>
+                          <%= f.rich_text_area :content %>
+                          <div class="mt-3 d-flex justify-content-between">
+                            <div>
+                              <%= f.button :submit, "Save", class:"btn btn-sm btn-primary" %>
+                              <%= link_to "Cancel", "#", class:"cancel btn btn-sm btn-secondary" %>
+                            </div>
+                            <%= link_to 'Delete',  post_element_path(@post, element), method: :delete, class: "btn btn-sm btn-danger", data: { confirm: "Are you sure?" } %>
+                          </div>
+                        <% end %>
+                      </div>
+                    </div>
+                  <% elsif element.image? %>
+                    <div class="mb-4 p-3 image">
+                      <% if element.image.present? %>
+                          <%= image_tag(element.image, width: '100%') %>
+                          <%= link_to post_element_path(@post, element), method: :delete, class: "delete-btn btn btn-sm btn-dark mt-2", data: { confirm: "Are you sure?" } do %>
+                            <i class="fas fa-times"></i>
+                          <% end %>
+                      <% else %>
+                        <%= simple_form_for([@post, element]) do |f| %>
+                          <%= f.input :image, label: false %>
+                          <div class="mt-3">
+                            <%= f.button :submit, "Save", class:"btn btn-sm btn-primary" %>
+                          </div>
+                        <% end %>
                       <% end %>
-                    <% end %>
-                  </div>
-                <% end %>
-              </li>
+                    </div>
+                  <% end %>
+                </li>
+              <% end %>
             <% end %>
-          <% end %>
-        </ul>
+          </ul>
+        <% end %>
       </div>
     </div>
   </div>
