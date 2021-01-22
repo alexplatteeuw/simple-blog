@@ -9,8 +9,7 @@ Rails.application.routes.draw do
   
   scope module: "readers" do 
     root to: 'pages#home'
+    get '/blog/:id', to: "posts#show", as: :blog_post
   end
-
-  get '/blog/:id', to: "readers/posts#show", as: :blog_post
 end
 
