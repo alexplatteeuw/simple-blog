@@ -7,7 +7,7 @@
       <div class="card-body">
         <div class="px-5 py-4">
           <h2 class="card-title mb-5"><%= @post.title %></h2>
-          <% @post.elements.each do |element| %>
+          <% @post.elements.order(position: :asc).each do |element| %>
             <% if element.image? %>
               <div class="image-element mb-5">
                 <%= image_tag(element.image) %>

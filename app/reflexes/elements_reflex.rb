@@ -4,7 +4,6 @@ class ElementsReflex < ApplicationReflex
     id = element.dataset[:id].to_i
     position = element.dataset[:position].to_i
     Element.find(id).insert_at(position)
-    # This is a hack, might break with future versions of StimulusReflex!
-    @halted = true
+    morph :nothing
   end
 end

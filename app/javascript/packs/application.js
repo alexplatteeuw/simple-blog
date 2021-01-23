@@ -10,20 +10,23 @@ require("channels");
 require("trix");
 require("@rails/actiontext");
 
+
 // ----------------------------------------------------
 // Note(lewagon): ABOVE IS RAILS DEFAULT CONFIGURATION
 // WRITE YOUR OWN JS STARTING FROM HERE 👇
 // ----------------------------------------------------
 
-// External imports
+require('chart.js');
+
 import "bootstrap";
 import "controllers";
 
 import { initStimulus } from "../controllers/index";
 import { initActionText } from '../packs/actiontext';
+import { initCharts } from '../packs/chartjs';
 
 document.addEventListener('turbolinks:load', () => {
   initActionText();
   initStimulus();
+  initCharts();
 });
-
